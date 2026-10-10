@@ -7,6 +7,46 @@ Aplicación de notas autoalojada con Node.js, Express y SQLite. El frontend est�
 - Node.js 20 o posterior y npm
 - Docker Engine con el plugin Docker Compose (para desplegar en contenedor)
 
+## Preparar un VPS Debian
+
+Los siguientes pasos de Docker son para una instalación nueva de Debian 12 (Bookworm) o Debian 13 (Trixie), usando el repositorio oficial de Docker. Si el VPS ya ejecuta Docker y otros contenedores, no reinstales ni retires paquetes a ciegas: comprueba primero `docker --version` y `sudo docker compose version`; si Compose v2 funciona, conserva la instalación actual y continúa con el despliegue.
+
+En un host nuevo, instala Docker Engine y el plugin Compose v2:
+
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg \
+  -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo "Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc" \
+  | sudo tee /etc/apt/sources.list.d/docker.sources > /dev/null
+
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io \
+  docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo docker run hello-world
+sudo docker compose version
+```
+
+Clona y arranca Notekar. Si ya tienes una copia local del repositorio, entra en ella y actualízala con `git pull` en lugar de volver a clonarla:
+
+```bash
+git clone https://github.com/karlosjota/notekar-s.git
+cd notekar-s
+sudo docker compose up -d --build
+sudo docker compose ps
+curl -fsS http://127.0.0.1:3000/api/health
+```
+
 ## Desarrollo local
 
 ```bash
@@ -31,6 +71,8 @@ La publicación Docker está ligada a `127.0.0.1:3000`, para que Apache en el VP
 Antes de empezar, apunta los registros DNS `A` (y `AAAA`, si lo usas) de `notekar.karlosjota.eu` al VPS y permite el tráfico entrante en los puertos 80 y 443. En el servidor:
 
 ```bash
+sudo apt update
+sudo apt install -y apache2 certbot
 sudo a2enmod proxy proxy_http headers rewrite ssl
 sudo mkdir -p /var/www/letsencrypt/.well-known/acme-challenge
 sudo cp deploy/apache2/notekar-http.conf /etc/apache2/sites-available/notekar.conf
