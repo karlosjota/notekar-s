@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8fa">
+    <title>Notekar</title>
+    <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="Notekar, inicio">
+        <span class="brand-mark"><i class="fa-solid fa-note-sticky" aria-hidden="true"></i></span>
+        <span>notekar</span>
+      </a>
+      <div class="header-actions">
+        <label class="search-box" for="search-input">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input id="search-input" type="search" placeholder="Buscar notas" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <button id="new-note-button" class="btn btn-primary new-note-button" type="button">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          <span>Nueva nota</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="notes-sidebar" aria-label="Tus notas">
+        <div class="sidebar-heading">
+          <div>
+            <p class="eyebrow">ESPACIO PERSONAL</p>
+            <h1>Mis notas</h1>
+          </div>
+          <span id="notes-count" class="notes-count">0</span>
+        </div>
+        <div id="notes-list" class="notes-list" aria-live="polite"></div>
+        <p class="sidebar-footer">
+          <i class="fa-solid fa-lock" aria-hidden="true"></i>
+          Tus notas se guardan en tu servidor.
+        </p>
+      </aside>
+
+      <section class="editor-pane" aria-label="Editor de notas">
+        <div id="empty-state" class="empty-state">
+          <div class="empty-icon"><i class="fa-regular fa-note-sticky" aria-hidden="true"></i></div>
+          <h2>Un lugar para tus ideas</h2>
+          <p>Crea una nota para empezar. Se guardará en tu propia base de datos.</p>
+          <button id="empty-new-note-button" class="btn btn-primary" type="button">
+            <i class="fa-solid fa-plus me-2" aria-hidden="true"></i>Crear una nota
+          </button>
+        </div>
+
+        <form id="note-form" class="note-editor d-none">
+          <div class="editor-toolbar">
+            <span id="save-status" class="save-status" aria-live="polite"></span>
+            <div class="editor-actions">
+              <button id="delete-note-button" class="btn btn-light btn-icon danger-action" type="button" aria-label="Eliminar nota" title="Eliminar nota">
+                <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+              </button>
+              <button id="save-note-button" class="btn btn-primary save-button" type="submit">
+                <i class="fa-regular fa-floppy-disk me-2" aria-hidden="true"></i>Guardar
+              </button>
+            </div>
+          </div>
+          <label class="visually-hidden" for="note-title">Título</label>
+          <input id="note-title" class="note-title" type="text" maxlength="200" placeholder="Título de la nota">
+          <label class="visually-hidden" for="note-content">Contenido</label>
+          <textarea id="note-content" class="note-content" maxlength="200000" placeholder="Escribe aquí..."></textarea>
+          <div class="editor-meta">
+            <span id="note-updated"></span>
+            <span id="character-count">0 caracteres</span>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <div id="toast" class="app-toast" role="status" aria-live="polite"></div>
+    <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

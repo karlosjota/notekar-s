@@ -1,0 +1,16 @@
+services:
+  notekar:
+    build: .
+    container_name: notekar-s
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_PATH: /app/data/notekar.sqlite
+    ports:
+      - "127.0.0.1:${NOTEKAR_PORT:-3000}:3000"
+    volumes:
+      - notekar_data:/app/data
+
+volumes:
+  notekar_data:
